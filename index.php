@@ -83,6 +83,9 @@ if (!preg_match("/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z
   setcookie('email_error', '1', time()+24*60*60);
   $errors = TRUE;
 }
+	else {
+    setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
+  }
 
 
 if (empty($_POST['bio'])) {
