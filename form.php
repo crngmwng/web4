@@ -30,9 +30,7 @@ if (!empty($messages)) {
         </label><br />
         <label>
             email:<br />
-            <input name="email"
-                   value="test@example.com"
-                   type="email" />
+            <input name="email" <?php if ($errors['email']) {print 'class="error"';} ?> value="<?php print $values['email']; ?>" /> />
         </label><br />
         <select id="year" name="year"></select> <br />
         <script>for (let year = 1920; year <= 2022; year++) {
