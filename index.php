@@ -36,11 +36,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Выводим сообщение.
     $messages[] = '<div class="error">Заполните имя.</div>';
   }
+	
+  if ($errors['email']) {
+    setcookie('email_error', '', 100000);
+    $messages[] = '<div class="error">Введите корректный email.</div>';
+  }
   // TODO: тут выдать сообщения об ошибках в других полях.
 
   // Складываем предыдущие значения полей в массив, если есть.
   $values = array();
   $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
+$values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
   // TODO: аналогично все поля.
 
   // Включаем содержимое файла form.php.
@@ -52,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 else {
   // Проверяем ошибки.
   $errors = FALSE;
-  if (empty($_POST['name'])) {
+  if (empty($_POST['name']) || !preg_match("/^[a-zа-яё]+$/i", $_POST['name'])) {
     // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('name_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
@@ -74,7 +80,7 @@ if (empty($_POST['email'])) {
 }
 
 if (!preg_match("/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/", $_POST['email'])){
-  echo "<script> alert('Невозможный email.');</script>";
+  setcookie('email_error', '1', time()+24*60*60);
   $errors = TRUE;
 }
 
@@ -97,6 +103,7 @@ if (empty($_POST['bio'])) {
   else {
     // Удаляем Cookies с признаками ошибок.
     setcookie('name_error', '', 100000);
+	setcookie('email_error', '', 100000);
     // TODO: тут необходимо удалить остальные Cookies.
   }
 
