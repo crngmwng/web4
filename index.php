@@ -140,6 +140,10 @@ try {
   
   $stmt -> execute();
 }
+catch(PDOException $e){
+  print('Error : ' . $e->getMessage());
+  exit();
+}
 
   // Сохраняем куку с признаком успешного сохранения.
   setcookie('save', '1');
