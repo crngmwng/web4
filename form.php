@@ -26,11 +26,11 @@ if (!empty($messages)) {
 <form action="" method="POST">
         <label>
             Имя:<br />
-            <input name="name" <?php if ($errors['name']) {print 'class="error"';} ?> value="<?php print $values['name']; ?>" /> />
+            <input name="name" <?php if ($errors['name_empty']|| $errors['name_wrong']) {print 'class="error"';} ?> value="<?php print $values['name']; ?>" /> />
         </label><br />
         <label>
             email:<br />
-            <input name="email" <?php if ($errors['email']) {print 'class="error"';} ?> value="<?php print $values['email']; ?>" /> />
+            <input name="email" <?php if ($errors['email']||$errors['email_empty']) {print 'class="error"';} ?> value="<?php print $values['email']; ?>" /> />
         </label><br />
         <select id="year" name="year"></select> <br />
         <script>for (let year = 1920; year <= 2022; year++) {
@@ -82,7 +82,7 @@ if (!empty($messages)) {
         </label><br />
         <label>
            Биография:<br />
-            <textarea name="bio"></textarea>
+            <textarea name="bio" <?php if ($errors['bio_empty']) {print 'class="error"';} ?> value="<?php print $values['bio']; ?>"></textarea>
         </label><br />
         <label><input type="checkbox" checked="checked" name="check-1" />
             С контрактом ознакомлен
