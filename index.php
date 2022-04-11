@@ -26,28 +26,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
   // Складываем признак ошибок в массив.
   $errors = array();
-  $errors['name'] = !empty($_COOKIE['name_error']);
+  $errors['name_empty'] = !empty($_COOKIE['name_error']);
+	$errors['name_wrong'] = !empty($_COOKIE['name_err']);
 	$errors['email'] = !empty($_COOKIE['email_error']);
+	$errors['email_empty'] = !empty($_COOKIE['email_empty']);
+	$errors['bio_empty'] = !empty($_COOKIE['bio_empty']);
   // TODO: аналогично все поля.
 
   // Выдаем сообщения об ошибках.
-  if ($errors['name']) {
+  if ($errors['name_empty']) {
     // Удаляем куку, указывая время устаревания в прошлом.
     setcookie('name_error', '', 100000);
     // Выводим сообщение.
     $messages[] = '<div class="error">Заполните имя.</div>';
+  }
+	 if ($errors['name_wrong']) {
+    setcookie('name_err', '', 100000);
+    $messages[] = '<div class="error">Заполните имя правильно.</div>';
   }
 	
   if ($errors['email']) {
     setcookie('email_error', '', 100000);
     $messages[] = '<div class="error">Введите корректный email.</div>';
   }
+	if ($errors['email_empty']) {
+    setcookie('email_error', '', 100000);
+    $messages[] = '<div class="error">Введите email.</div>';
+  }
+	if($errors['bio_empty']) {
+	setcookie('bio_empty', '', 100000);
+    $messages[] = '<div class="error">Введите биографию.</div>';
+	}
   // TODO: тут выдать сообщения об ошибках в других полях.
 
   // Складываем предыдущие значения полей в массив, если есть.
   $values = array();
   $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
 $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
+	$values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
   // TODO: аналогично все поля.
 
   // Включаем содержимое файла form.php.
@@ -59,7 +75,7 @@ $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value']
 else {
   // Проверяем ошибки.
   $errors = FALSE;
-  if (empty($_POST['name']) || !preg_match("/^[a-zа-яё]+$/i", $_POST['name'])) {
+  if (empty($_POST['name'])) {
     // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('name_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
@@ -68,17 +84,22 @@ else {
     // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);
   }
-  
-  if (!preg_match("/^[a-zа-яё]+$/i", $_POST['name'])){
-	echo "<script> alert('Вводите только буквы в поле Имя.');</script>";
-$errors = TRUE;
-}
+if( !preg_match("/^[a-zа-яё]+$/i", $_POST['name'])) {
+	setcookie('name_err', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+} 
+	 else {
+    setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);
+  }
 
 
 if (empty($_POST['email'])) {
-  print('Заполните email.<br/>');
+ setcookie('email_empty', '1', time()+24*60*60);
   $errors = TRUE;
 }
+	else {
+    setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
+  }
 
 if (!preg_match("/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/", $_POST['email'])){
   setcookie('email_error', '1', time()+24*60*60);
@@ -89,10 +110,15 @@ if (!preg_match("/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z
   }
 
 
-if (empty($_POST['bio'])) {
-  print('Заполните биографию.<br/>');
+
+	if (empty($_POST['bio'])) {
+ setcookie('bio_empty', '1', time()+24*60*60);
   $errors = TRUE;
 }
+	else {
+    setcookie('bio_value', $_POST['bio'], time() + 30 * 24 * 60 * 60);
+  }
+
 
 // *************
 // TODO: тут необходимо проверить правильность заполнения всех остальных полей.
@@ -108,6 +134,9 @@ if (empty($_POST['bio'])) {
     // Удаляем Cookies с признаками ошибок.
     setcookie('name_error', '', 100000);
 	setcookie('email_error', '', 100000);
+	setcookie('name_err', '', 100000);
+	  setcookie('email_empty', '', 100000);
+	  setcookie('bio_empty', '', 100000);
     // TODO: тут необходимо удалить остальные Cookies.
   }
 
