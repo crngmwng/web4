@@ -40,7 +40,7 @@ if (!empty($messages)) {
         </script>
         Пол:
         <label>
-            <input type="radio" checked="checked"
+            <input type="radio"
                    name="radio-group-1" value="m" <?php if($values['radio-group-1']=="m") {print 'checked';} ?> />
             Муж
         </label>
