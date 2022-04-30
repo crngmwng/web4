@@ -108,6 +108,37 @@ if (!preg_match("/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z
 	else {
     setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
   }
+if (empty($_POST['year'])) {
+ setcookie('year_empty', '1', time()+24*60*60);
+  $errors = TRUE;
+}
+	else {
+    setcookie('year_value', $_POST['year'], time() + 30 * 24 * 60 * 60);
+  }
+
+	if (empty($_POST['radio-group-1'])) {
+ setcookie('sex_empty', '1', time()+24*60*60);
+  $errors = TRUE;
+}
+	else {
+    setcookie('sex_value', $_POST['radio-group-1'], time() + 30 * 24 * 60 * 60);
+  }
+
+	if (empty($_POST['radio-group-2'])) {
+ setcookie('limbs_empty', '1', time()+24*60*60);
+  $errors = TRUE;
+}
+	else {
+    setcookie('limbs_value', $_POST['radio-group-2'], time() + 30 * 24 * 60 * 60);
+  }
+
+	if (empty($_POST['power'])) {
+ setcookie('power_empty', '1', time()+24*60*60);
+  $errors = TRUE;
+}
+	else {
+    setcookie('power_value', $_POST['power'], time() + 30 * 24 * 60 * 60);
+  }
 
 
 
